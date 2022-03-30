@@ -11,6 +11,7 @@ function App() {
   const [block, setBlock] = useState("")
   const [blockInfo, setBlockInfo] = useState({})
   const [search, setSearch] = useState("")
+  const [keys, setKeys] = useState([])
 
 
   const getLatestBlock = async (blockNumber) => {
@@ -23,7 +24,9 @@ function App() {
       console.log(blockNumber)
       const blockInformation = await web3.eth.getBlock(blockNumber)
       setBlockInfo(blockInformation)
-      console.log(blockInformation)
+      Object.keys(blockInfo).map(key => {
+        // console.log(key, blockInfo[key])
+      })
     }
   }
 
@@ -48,25 +51,36 @@ function App() {
       <table class="table">
         <tbody>
           {
-            !blockInfo ? <tr>Nothingtosay</tr> : 
-              <>
+            !blockInfo ? <tr>Nothingtosay</tr> : Object.keys(blockInfo).map(key => {
+              // console.log(key, blockInfo[key])
+              return (
                 <tr>
-                  <td>base fee per gas</td>
-                  <td>{blockInfo.baseFeePerGas}</td>
+                  <td>{key}</td>
+                  <td>{blockInfo[key]}</td>
                 </tr>
-                <tr>
-                  <td>difficulty</td>
-                  <td>{blockInfo.difficulty}</td>
-                </tr>
-                <tr>
-                  <td>timestamp</td>
-                  <td>{blockInfo.timestamp}</td>
-                </tr>
-                <tr>
-                  <td>gas Used</td>
-                  <td>{blockInfo.gasUsed}</td>
-                </tr>
-              </>
+              )
+            })
+            // const tifOptions = Object.keys(tifs).map(key => 
+            //   <option value={key}>{tifs[key]}</option>
+            // )
+              // <>
+              //   <tr>
+              //     <td>base fee per gas</td>
+              //     <td>{blockInfo.baseFeePerGas}</td>
+              //   </tr>
+              //   <tr>
+              //     <td>difficulty</td>
+              //     <td>{blockInfo.difficulty}</td>
+              //   </tr>
+              //   <tr>
+              //     <td>timestamp</td>
+              //     <td>{blockInfo.timestamp}</td>
+              //   </tr>
+              //   <tr>
+              //     <td>gas Used</td>
+              //     <td>{blockInfo.gasUsed}</td>
+              //   </tr>
+              // </>
           }
         </tbody>
       </table>
