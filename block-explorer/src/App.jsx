@@ -39,48 +39,59 @@ function App() {
 
   return (
     <div className="container">
-      <h1>latest Block Number : {block}</h1>
+      <h1 className='mt-3'>Latest Block Number : <span className='text-secondary cursor-pointer'>{block}</span></h1>
       <hr />
       <div>
         <div className="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Search block number" onChange={(e) => setSearch(e.target.value)} />
+          <input type="text" className="form-control" placeholder="Search block number" onChange={(e) => setSearch(e.target.value)} />
           <button className="btn btn-outline-secondary" type="button" onClick={() => searchBlock(search)}>Search</button>
         </div>
       </div>
 
-      <table class="table">
+      <table class="table" style={{tableLayout: ""}}>
         <tbody>
           {
             !blockInfo ? <tr>Nothingtosay</tr> : Object.keys(blockInfo).map(key => {
-              // console.log(key, blockInfo[key])
+              if(key === 'logsBloom') {
+                return <></>
+              }
+              else if(key === 'transactions') {
+                return (
+                  <tr>
+                    <td className='text-secondary'>{key}</td>
+                    <td className='text-truncate'>
+                      <span className='d-inline-block text-truncate' style={{maxWidth: "1000px"}}>
+                        {
+                          blockInfo[key].length < 1 ? <span>0 transaction</span>  : 
+                          blockInfo[key].map((el, i) => {
+                            if (i < 1) {
+                              return (
+                                <div>
+                                    <span className='text-secondary'>{blockInfo[key].length} transactions : </span>
+                                    <span className='text-primary'>{el}, </span>
+                                </div>
+                              )
+                            }
+                            else {
+                              return (
+                                <span className='text-primary'>{el}, </span>
+                              )
+                            }
+                            
+                          })
+                        }
+                      </span>
+                    </td>
+                  </tr>
+                )
+              }
               return (
                 <tr>
-                  <td>{key}</td>
+                  <td className='text-secondary'>{key}</td>
                   <td>{blockInfo[key]}</td>
                 </tr>
               )
             })
-            // const tifOptions = Object.keys(tifs).map(key => 
-            //   <option value={key}>{tifs[key]}</option>
-            // )
-              // <>
-              //   <tr>
-              //     <td>base fee per gas</td>
-              //     <td>{blockInfo.baseFeePerGas}</td>
-              //   </tr>
-              //   <tr>
-              //     <td>difficulty</td>
-              //     <td>{blockInfo.difficulty}</td>
-              //   </tr>
-              //   <tr>
-              //     <td>timestamp</td>
-              //     <td>{blockInfo.timestamp}</td>
-              //   </tr>
-              //   <tr>
-              //     <td>gas Used</td>
-              //     <td>{blockInfo.gasUsed}</td>
-              //   </tr>
-              // </>
           }
         </tbody>
       </table>
